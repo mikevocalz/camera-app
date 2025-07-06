@@ -2,8 +2,10 @@
 
 A feature-rich camera application built with React Native and Expo that allows users to capture photos, record videos, browse media in a gallery view, and manage favorites.
 
+Screenshots:
 ![Screenshot](https://github.com/mikevocalz/camera-app/blob/master/assets/images/screenshot.jpeg)
 
+Video Demo:
 [![Demo Video](https://github.com/mikevocalz/camera-app/blob/master/assets/images/screenshot.jpeg)](https://github.com/mikevocalz/camera-app/blob/master/assets/video/demo.mp4)
 
 ## Features
