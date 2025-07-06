@@ -43,26 +43,42 @@ export default function Home() {
       const res = await FileSystem.readDirectoryAsync(FileSystem.documentDirectory);
       console.log("Files found:", res);
       
-      // Filter files to only include valid media files
+      // Extract file info and sort by filename (often contains timestamp)
       const mediaFiles = res
         .map(file => {
           const type = getMediaType(file);
           return { 
             name: file, 
             uri: FileSystem.documentDirectory + file,
-            type 
+            type,
+            timestamp: extractTimestampFromFilename(file)
           };
         })
-        .filter(item => item.type !== 'unknown');
+        .filter(item => item.type === 'image' || item.type === 'video');
+      
+      mediaFiles.sort((a, b) => a.timestamp - b.timestamp);
       
       console.log("Media files found:", mediaFiles.length);
-      setImages(mediaFiles);
+      
+      setImages(mediaFiles.map(item => ({
+        name: item.name,
+        uri: item.uri,
+        type: item.type
+      })));
     } catch (error) {
       console.error("Error loading files:", error);
       setImages([]);
     }
   };
-
+  
+  const extractTimestampFromFilename = (filename: string): number => {
+    const matches = filename.match(/(\d{8}|\d{6}|\d{10}|\d{13})/);
+    if (matches && matches[1]) {
+      return parseInt(matches[1], 10);
+    }
+    
+    return 0;
+  };
 
   const loadFavorites = async () => {
     try {

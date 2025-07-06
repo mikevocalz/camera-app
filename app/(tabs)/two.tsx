@@ -1,4 +1,4 @@
-import { Stack, useFocusEffect, router  , Link} from 'expo-router';
+import { Stack, useFocusEffect, Link} from 'expo-router';
 import { useCallback, useState } from 'react';
 import { StyleSheet, Pressable, View, FlatList, Text } from 'react-native';
 import { Image } from 'expo-image';
@@ -12,7 +12,6 @@ type Media = {
   name: string;
   uri: string;
   type: MediaType;
-  thumbnail?: string;
 };
 
 export default function Favorites() {
@@ -60,22 +59,41 @@ export default function Favorites() {
     }
   };
 
-  const removeFavorite = async (filename: string) => {
+  const removeFavorite = async (uri: string) => {
     try {
+      console.log("Attempting to remove favorite with URI:", uri);
+      
+      const filename = uri.split('/').pop() || '';
+      console.log("Extracted filename to remove:", filename);
+      
       const favoritesJson = await AsyncStorage.getItem('favorites');
-      if (!favoritesJson) return;
+      if (!favoritesJson) {
+        console.log("No favorites found in storage");
+        return;
+      }
       
       const favorites = JSON.parse(favoritesJson) as string[];
+      console.log("Current favorites in storage:", favorites);
       
-      const newFavorites = favorites.filter(fav => fav !== filename);
-    
-      await AsyncStorage.setItem('favorites', JSON.stringify(newFavorites));
+      const exists = favorites.includes(filename);
+      console.log("Filename exists in favorites?", exists);
       
-      setFavoriteImages(current => 
-        current.filter(img => img.name !== filename)
-      );
+      if (!exists) {
+        console.log("Favorite not found, nothing to remove");
+        return;
+      }
+      
+      const updatedFavorites = favorites.filter(fav => fav !== filename);
+      console.log("Favorites after filtering:", updatedFavorites);
+      
+      await AsyncStorage.setItem('favorites', JSON.stringify(updatedFavorites));
+      console.log("Updated favorites saved to storage");
+      
+      setFavoriteImages(current => current.filter(img => img.name !== filename));
+      
+      setTimeout(loadFavoriteImages, 100);
     } catch (error) {
-      console.error("Error removing favorited Image:", error);
+      console.error("Error removing favorite:", error);
     }
   };
 
@@ -134,7 +152,11 @@ export default function Favorites() {
                   </Pressable>
                 </Link>
                 <Pressable
-                  onPress={() => removeFavorite(item.uri)}
+                  onPress={(e) => {
+                    e.stopPropagation(); // Stop event propagation
+                    console.log("Favorite remove button pressed for:", item.uri);
+                    removeFavorite(item.uri);
+                  }}
                   style={{
                     position: 'absolute',
                     bottom: 10,
@@ -142,6 +164,7 @@ export default function Favorites() {
                     backgroundColor: 'rgba(0,0,0,0.3)',
                     borderRadius: 20,
                     padding: 5,
+                    zIndex: 100, // Ensure it's above other elements
                   }}>
                   <Heart size={20} color="#ff6b81" fill="#ff6b81" />
                 </Pressable>
