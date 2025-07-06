@@ -2,6 +2,7 @@
   "name": "camera-app",
   "version": "1.0.0",
   "main": "expo-router/entry",
+  "license": "MIT",
   "scripts": {
     "android": "expo start --android",
     "ios": "expo start --ios",
