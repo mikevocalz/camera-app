@@ -89,7 +89,7 @@ export default function CameraScreen() {
 
   if (picture || video) {
     return (
-      <View style={{ flex: 1 }}>
+      <View className="flex-1">
         {picture && (
           <Image
             contentFit="cover"
@@ -100,9 +100,9 @@ export default function CameraScreen() {
         {video && (
           <VideoView contentFit="cover" style={{ width: '100%', flex: 1 }} player={player} />
         )}
-        <View className="p-5">
-          <SafeAreaView edges={['bottom']}>
-            <Pressable onPress={() => saveFile(picture?.uri || video || '')}>
+        <View style={{ backgroundColor: '#00494a' }} className="z-50 p-[4px] w-full items-center relative pb-[28px]">
+          <SafeAreaView edges={['bottom']} className="w-full items-center">
+            <Pressable className="bg-white h-[48px] w-full items-center justify-center rounded-xl  my-[2px] px-[12px] max-w-[400px]" onPress={() => saveFile(picture?.uri || video || '')}>
               <Text className="mb-1 text-center font-medium">Save</Text>
             </Pressable>
           </SafeAreaView>
