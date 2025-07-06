@@ -4,7 +4,7 @@ A feature-rich camera application built with React Native and Expo that allows u
 
 ![Screenshot](https://github.com/mikevocalz/camera-app/blob/master/assets/images/screenshot.jpeg)
 
-[![Demo Video](https://github.com/mikevocalz/camera-app/blob/master/assets/images/video-thumbnail.jpg)](https://github.com/mikevocalz/camera-app/blob/master/assets/video/demo.mp4)
+[![Demo Video](https://github.com/mikevocalz/camera-app/blob/master/assets/images/screenshot.jpeg)](https://github.com/mikevocalz/camera-app/blob/master/assets/video/demo.mp4)
 
 ## Features
 
